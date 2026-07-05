@@ -22,4 +22,16 @@ values
 
 --show data
 select * from country_info;
+select country_name from country_info where country_population<=100000000;
 
+--count
+select count(*) from country_info;
+select count(country_name) from country_info where country_name='india';
+select count(country_name) from country_info where country_population<=100000000;
+
+--distinct
+select distinct capital from country_info where country_name='new delhi';
+
+--limit
+select * from country_info limit 5;
+select * from country_info where country_population<=100000000 limit 3;
