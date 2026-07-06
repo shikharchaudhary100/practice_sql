@@ -1,86 +1,57 @@
---create table emoloyees
-CREATE TABLE EMPLOYEES (
-    EMP_ID CHAR(9) NOT NULL, 
-    F_NAME VARCHAR(15) NOT NULL,
-    L_NAME VARCHAR(15) NOT NULL,
-    SSN CHAR(9),
-    B_DATE TEXT,
-    SEX CHAR,
-    ADDRESS VARCHAR(30),
-    JOB_ID CHAR(9),
-    SALARY DECIMAL(10,2),
-    MANAGER_ID CHAR(9),
-    DEP_ID CHAR(9) NOT NULL,
-    PRIMARY KEY (EMP_ID));
- 
- INSERT INTO EMPLOYEES
- VALUES
-('E1001','John','Thomas',123456,'1976-09-01','M',"5631 Rice, OakPark,IL",100,100000,30001,2),
-('E1002','Alice','James',123457,'1972-07-31','F',"980 Berry ln, Elgin,IL",200,80000,30002,5),
-('E1003','Steve','Wells',123458,'1980-10-08','M',"291 Springs, Gary,IL",300,50000,30002,5),
-('E1004','Santosh','Kumar',123459,'1985-07-20','M',"511 Aurora Av, Aurora,IL",400,60000,30002,5),
-('E1005','Ahmed','Hussain',123410,'1981-04-01','M',"216 Oak Tree, Geneva,IL",500,70000,30001,2),
-('E1006','Nancy','Allen',123411,'1978-06-02','F',"111 Green Pl, Elgin,IL",600,90000,30001,2),
-('E1007','Mary','Thomas',123412,'1975-05-05','F',"100 Rose Pl, Gary,IL",650,65000,30003,7),
-('E1008','Bharath','Gupta',123413,'1985-06-05','M',"145 Berry Ln, Naperville,IL",660,65000,30003,7),
-('E1009','Andrea','Jones',123414,'1990-09-07','F',"120 Fall Creek, Gary,IL",234,70000,30003,7),
-('E1010','Ann','Jacob',123415,'1982-03-30','F',"111 Britany Springs,Elgin,IL",220,70000,30002,5);
-SELECT * FROM EMPLOYEES;
+--create a table PETRESCUE
+CREATE TABLE PETRESCUE (
+	ID INTEGER NOT NULL,
+	ANIMAL VARCHAR(20),
+	QUANTITY INTEGER,
+	COST DECIMAL(6,2),
+	RESCUEDATE DATE,
+	PRIMARY KEY (ID)
+	);
 
---retrieve the first names F_NAME and last names L_NAME of all employees who live in Elgin, IL
-SELECT F_NAME, L_NAME FROM EMPLOYEES
-WHERE ADDRESS LIKE "%Elgin,IL%";
+INSERT INTO PETRESCUE VALUES
+	(1,'Cat',9,450.09,'2018-05-29'),
+	(2,'Dog',3,666.66,'2018-06-01'),
+	(3,'Dog',1,100.00,'2018-06-04'),
+	(4,'Parrot',2,50.00,'2018-06-04'),
+	(5,'Dog',1,75.75,'2018-06-10'),
+	(6,'Hamster',6,60.60,'2018-06-11'),
+	(7,'Cat',1,44.44,'2018-06-11'),
+	(8,'Goldfish',24,48.48,'2018-06-14'),
+	(9,'Dog',2,222.22,'2018-06-15');
+SELECT * FROM PETRESCUE;
 
---retrieve the first names F_NAME and last names L_NAME of all employees who were born during the 70s
-SELECT F_NAME, L_NAME FROM EMPLOYEES
-WHERE B_DATE LIKE "197%";
+--calculates the total cost of all animal rescues and label it
+SELECT SUM(COST) AS SUM_OF_COST FROM PETRESCUE;
 
---retrieve all employee records in department 5 where salary is between 60000 and 70000
-SELECT * FROM EMPLOYEES
-WHERE SALARY BETWEEN 60000 AND 70000 AND DEP_ID=5;
+--displays the maximum quantity of animals rescued
+SELECT MAX(QUANTITY) AS MAXIMUM_RESCUE FROM PETRESCUE;
 
---retrieve a list of employees ordered by department ID
-SELECT * FROM EMPLOYEES
-ORDER BY DEP_ID;
+----displays the minimum quantity of animals rescued
+SELECT MIN(QUANTITY) AS MINIMUM_RESCUE FROM PETRESCUE; 
 
---retrieve a list of employees ordered by department ID and then in descending alphabetical order by last name
-SELECT * FROM EMPLOYEES
-ORDER BY DEP_ID DESC, L_NAME DESC;
+--displays the average cost of animals rescued
+SELECT AVG(COST) AS AVERAGE_COST FROM PETRESCUE;
 
---retrieve the number of employees in the department
-SELECT DEP_ID, COUNT(*) FROM EMPLOYEES
-GROUP BY DEP_ID;
+--displays the rounded cost of each rescue upto 1 decimal point
+SELECT ROUND(COST,1) FROM PETRESCUE;
 
---for each department, retrieve the number of employees in the department and the average employee salary in the department
-SELECT DEP_ID, COUNT(*), AVG(SALARY) FROM EMPLOYEES
-GROUP BY DEP_ID;
+--displays the length of each animal name
+SELECT LENGTH(ANIMAL) FROM PETRESCUE;
 
---appropriate labels for the columns of data retrieved in the last problem 
-SELECT DEP_ID, COUNT(*) AS NUM_EMPLOYEES, AVG(SALARY) AS AVG_SALARY FROM EMPLOYEES
-GROUP BY DEP_ID;
+--displays the animal name in each rescue in uppercase
+SELECT UPPER(ANIMAL) FROM PETRESCUE;
 
---sort the result of the previous query by average salary
-SELECT DEP_ID, COUNT(*) AS NUM_EMPLOYEES, AVG(SALARY) AS AVG_SALARY FROM EMPLOYEES
-GROUP BY DEP_ID ORDER BY AVG_SALARY;
+--displays the animal name in each rescue in lowercase
+SELECT LOWER(ANIMAL) FROM PETRESCUE;
 
---retieve the number of employees 
-SELECT DEP_ID, COUNT(*) FROM EMPLOYEES
-GROUP BY DEP_ID HAVING SALARY>=80000;
+--displays the rescue day, month and year seperately
+SELECT STRFTIME('%D',RESCUEDATE) FROM PETRESCUE;
+SELECT STRFTIME('%M',RESCUEDATE) FROM PETRESCUE;
+SELECT STRFTIME('%Y',RESCUEDATE) FROM PETRESCUE;
 
---list of all employees, first and last names, whose first names start with 'S'
-SELECT DEP_ID, F_NAME, L_NAME FROM EMPLOYEES
-WHERE F_NAME LIKE "S%";
+--displays the after 3 days date of each rescue
+SELECT DATE(RESCUEDATE,'+3 DAYS') FROM PETRESCUE;
 
---Arrange all the records of the EMPLOYEES table in ascending order of the date of birth
-SELECT * FROM EMPLOYEES
-ORDER BY B_DATE;
+--displays the after 2 months date of each rescue
+SELECT DATE(RESCUEDATE,'+2 MONTHS') FROM PETRESCUE;
 
---Group the records in terms of the department IDs and filter them of ones that have average salary more than or equal to 60000
-SELECT * FROM EMPLOYEES
-GROUP BY DEP_ID HAVING AVG(SALARY) >= 60000;
-
---For the problem above, sort the results for each group in descending order of average salary
-SELECT * FROM EMPLOYEES
-GROUP BY DEP_ID 
-HAVING AVG(SALARY) >= 60000
-ORDER BY AVG(SALARY) DESC;
